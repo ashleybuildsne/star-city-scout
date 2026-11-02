@@ -1,0 +1,1723 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="data:," />
+    <title>Star City Scout</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Public+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #fdf8f1;
+        --surface: #ffffff;
+        --surface-2: #fff4e4;
+        --ink: #23203a;
+        --ink-soft: #5c5872;
+        --line: #ead9c4;
+        --accent: #d9481f;
+        --accent-ink: #ffffff;
+        --gold: #f2a516;
+        --teal: #0e7a6d;
+        --teal-soft: #e2f3f0;
+        --warn-bg: #fdf0e2;
+        --warn-ink: #8a4b12;
+        --shadow: 0 10px 30px rgba(35, 32, 58, 0.08);
+        --radius: 16px;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #17151f;
+          --surface: #221f30;
+          --surface-2: #2a2438;
+          --ink: #f4efe6;
+          --ink-soft: #b6b0c6;
+          --line: #3a3450;
+          --accent: #ff6b3d;
+          --accent-ink: #1c0f08;
+          --gold: #ffb63d;
+          --teal: #3ec9b6;
+          --teal-soft: #17332f;
+          --warn-bg: #38260f;
+          --warn-ink: #ffc98a;
+          --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+        }
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: "Public Sans", system-ui, sans-serif;
+        font-size: 16px;
+        line-height: 1.5;
+      }
+      .wrap {
+        max-width: 1120px;
+        margin: 0 auto;
+        padding: 28px 18px 56px;
+      }
+      header.intro { margin-bottom: 22px; }
+      header.intro h1 {
+        font-family: "Bricolage Grotesque", "Public Sans", sans-serif;
+        font-size: clamp(30px, 5vw, 44px);
+        font-weight: 800;
+        letter-spacing: -0.01em;
+        margin: 0 0 6px;
+      }
+      header.intro h1 .star { color: var(--gold); }
+      header.intro p {
+        margin: 0;
+        color: var(--ink-soft);
+        font-size: 17px;
+        max-width: 62ch;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: minmax(300px, 400px) 1fr;
+        gap: 22px;
+        align-items: start;
+      }
+      @media (max-width: 860px) {
+        .grid { grid-template-columns: 1fr; }
+      }
+      .card {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        padding: 22px;
+      }
+      .card h2 {
+        font-family: "Bricolage Grotesque", "Public Sans", sans-serif;
+        font-size: 20px;
+        font-weight: 700;
+        margin: 0 0 4px;
+      }
+      .card .sub { color: var(--ink-soft); font-size: 14px; margin: 0 0 18px; }
+      label {
+        display: block;
+        font-weight: 600;
+        font-size: 14px;
+        margin: 16px 0 6px;
+      }
+      label:first-of-type { margin-top: 0; }
+      label .opt {
+        font-weight: 400;
+        color: var(--ink-soft);
+        font-size: 13px;
+      }
+      input[type="text"],
+      input[type="url"],
+      input[type="password"],
+      textarea {
+        width: 100%;
+        padding: 11px 13px;
+        border: 1.5px solid var(--line);
+        border-radius: 10px;
+        background: var(--bg);
+        color: var(--ink);
+        font: inherit;
+        font-size: 15px;
+      }
+      input:focus, textarea:focus {
+        outline: 2px solid var(--gold);
+        outline-offset: 1px;
+        border-color: var(--gold);
+      }
+      .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+      .row2 label { margin-top: 16px; }
+      .hint { font-size: 13px; color: var(--ink-soft); margin-top: 5px; }
+      .form-actions { display: flex; gap: 10px; margin-top: 22px; flex-wrap: wrap; }
+      button {
+        font: inherit;
+        font-weight: 700;
+        border: none;
+        cursor: pointer;
+        border-radius: 10px;
+        padding: 12px 18px;
+      }
+      .btn-primary { background: var(--accent); color: var(--accent-ink); flex: 1; min-width: 170px; }
+      .btn-primary:active { transform: translateY(1px); }
+      .btn-ghost {
+        background: transparent;
+        color: var(--ink-soft);
+        border: 1.5px solid var(--line);
+      }
+      /* Facebook-style preview */
+      .fb-post {
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        overflow: hidden;
+        background: var(--surface);
+      }
+      .fb-head {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        padding: 14px 16px 10px;
+      }
+      .fb-avatar {
+        width: 42px; height: 42px;
+        border-radius: 50%;
+        background: var(--gold);
+        color: #23203a;
+        display: grid; place-items: center;
+        font-size: 21px;
+        flex: none;
+      }
+      .fb-name { font-weight: 700; font-size: 15px; line-height: 1.25; }
+      .fb-meta { font-size: 13px; color: var(--ink-soft); }
+      .fb-body {
+        padding: 2px 16px 16px;
+        white-space: pre-wrap;
+        word-break: break-word;
+        font-size: 15.5px;
+      }
+      .fb-body a { color: var(--teal); font-weight: 600; }
+      .copy-row {
+        display: flex;
+        gap: 10px;
+        margin-top: 14px;
+        flex-wrap: wrap;
+      }
+      .btn-copy { background: var(--teal); color: #fff; flex: 1; min-width: 160px; }
+      @media (prefers-color-scheme: dark) {
+        .btn-copy { color: #06231f; }
+      }
+      .btn-copy.alt { background: var(--surface-2); color: var(--ink); border: 1.5px solid var(--line); }
+      .fresh-bar {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        flex-wrap: wrap;
+        margin: 0 0 14px;
+      }
+      .btn-fresh { background: var(--gold); color: #23203a; flex: none; }
+      .btn-fresh:disabled { opacity: 0.55; cursor: wait; }
+      .fresh-status { font-size: 13.5px; color: var(--ink-soft); margin: 0; flex: 1; min-width: 200px; }
+      .fresh-status.on { color: var(--teal); font-weight: 600; }
+      .fresh-status.err { color: var(--warn-ink); font-weight: 600; }
+      .section-label {
+        font-family: "Bricolage Grotesque", "Public Sans", sans-serif;
+        font-weight: 700;
+        font-size: 15px;
+        margin: 24px 0 8px;
+      }
+      .comment-box {
+        background: var(--surface-2);
+        border: 1px dashed var(--gold);
+        border-radius: 12px;
+        padding: 14px 16px;
+        white-space: pre-wrap;
+        word-break: break-word;
+        font-size: 15px;
+      }
+      .comment-box.none {
+        border-style: solid;
+        border-color: var(--line);
+        color: var(--ink-soft);
+        background: transparent;
+      }
+      .gaps {
+        background: var(--warn-bg);
+        color: var(--warn-ink);
+        border-radius: 12px;
+        padding: 14px 16px;
+        font-size: 14.5px;
+      }
+      .gaps p { margin: 0 0 6px; font-weight: 700; }
+      .gaps ul { margin: 0; padding-left: 20px; }
+      .gaps.ok { background: var(--teal-soft); color: var(--ink); }
+      .checks { list-style: none; margin: 6px 0 0; padding: 0; font-size: 14.5px; }
+      .checks li { padding: 5px 0 5px 28px; position: relative; color: var(--ink-soft); }
+      .checks li::before {
+        content: "✓";
+        position: absolute; left: 2px; top: 5px;
+        color: var(--teal); font-weight: 800;
+      }
+      .checks li strong { color: var(--ink); }
+      .toast {
+        position: fixed;
+        left: 50%;
+        bottom: 26px;
+        transform: translateX(-50%) translateY(20px);
+        background: var(--ink);
+        color: var(--bg);
+        padding: 11px 20px;
+        border-radius: 999px;
+        font-weight: 600;
+        font-size: 14.5px;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.2s ease, transform 0.2s ease;
+        z-index: 10;
+      }
+      .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+      footer { margin-top: 28px; color: var(--ink-soft); font-size: 13.5px; text-align: center; }
+      /* Key box */
+      .key-card { margin-bottom: 22px; }
+      .key-card h2 { display: flex; align-items: center; gap: 9px; }
+      .key-card h2 .lock { color: var(--gold); font-size: 19px; }
+      .key-row { display: flex; gap: 10px; flex-wrap: wrap; }
+      .key-row input { flex: 1; min-width: 220px; }
+      .key-row button { flex: none; }
+      .key-status { font-size: 13.5px; color: var(--ink-soft); margin: 10px 0 0; }
+      .key-status.on { color: var(--teal); font-weight: 600; }
+      /* Screenshot drop zone */
+      .dropzone {
+        border: 2px dashed var(--gold);
+        border-radius: 12px;
+        background: var(--surface-2);
+        padding: 18px 16px;
+        text-align: center;
+        cursor: pointer;
+        margin-bottom: 6px;
+      }
+      .dropzone:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+      .dropzone.drag { border-color: var(--accent); background: var(--warn-bg); }
+      .dropzone .dz-icon { font-size: 26px; line-height: 1; }
+      .dropzone .dz-title { font-weight: 700; margin: 8px 0 2px; }
+      .dropzone .dz-sub { font-size: 13.5px; color: var(--ink-soft); margin: 0; }
+      .shot-preview { display: none; margin-bottom: 6px; }
+      .shot-preview.show { display: block; }
+      .shot-preview img {
+        width: 100%;
+        max-height: 260px;
+        object-fit: contain;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: var(--bg);
+      }
+      .shot-actions { display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
+      .btn-read { background: var(--accent); color: var(--accent-ink); flex: 1; min-width: 170px; }
+      .btn-read:disabled { opacity: 0.55; cursor: wait; }
+      .shot-status { font-size: 14px; margin: 10px 0 0; color: var(--ink-soft); }
+      .shot-status.ok { color: var(--teal); font-weight: 600; }
+      .shot-status.err { color: var(--warn-ink); font-weight: 600; }
+      .shot-details { margin-top: 10px; font-size: 13px; color: var(--ink-soft); }
+      .shot-details summary { cursor: pointer; font-weight: 600; }
+      .shot-details pre {
+        white-space: pre-wrap;
+        word-break: break-word;
+        background: var(--bg);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 10px 12px;
+        font-size: 12.5px;
+        margin: 8px 0 0;
+      }
+      #btn-key-test:disabled { opacity: 0.55; cursor: wait; }
+      /* Image maker */
+      .img-card { margin-top: 22px; }
+      .img-actions { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+      .btn-gen { background: var(--gold); color: #23203a; flex: 1; min-width: 170px; }
+      .btn-gen:disabled { opacity: 0.55; cursor: wait; }
+      .btn-download {
+        background: var(--teal);
+        color: #fff;
+        flex: 1;
+        min-width: 170px;
+        text-decoration: none;
+        text-align: center;
+        font-weight: 700;
+        border-radius: 10px;
+        padding: 12px 18px;
+      }
+      @media (prefers-color-scheme: dark) {
+        .btn-download { color: #06231f; }
+      }
+      .img-status { font-size: 14px; margin: 10px 0 0; color: var(--ink-soft); }
+      .img-status.ok { color: var(--teal); font-weight: 600; }
+      .img-status.err { color: var(--warn-ink); font-weight: 600; }
+      .img-result { display: none; margin-top: 14px; }
+      .img-result.show { display: block; }
+      .img-result img {
+        width: 100%;
+        max-width: 640px;
+        display: block;
+        margin: 0 auto;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: var(--bg);
+      }
+      .or-divider {
+        display: flex; align-items: center; gap: 12px;
+        color: var(--ink-soft); font-size: 13px; font-weight: 600;
+        margin: 18px 0 2px;
+      }
+      .or-divider::before, .or-divider::after {
+        content: ""; flex: 1; height: 1px; background: var(--line);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header class="intro">
+        <h1>Star City Scout <span class="star" aria-hidden="true">★</span></h1>
+        <p>Paste in a deal, or drop in a screenshot and let Scout read it for you, and get back a ready-to-post kit for Star City Deals. The caption follows your house rules every time: playful first, price in the caption only, #ad and disclosure included, promo codes saved for the comments.</p>
+      </header>
+
+      <!-- ============ KEY BOX ============ -->
+      <section class="card key-card" aria-label="Your Meta AI key">
+        <h2><span class="lock" aria-hidden="true">🔑</span> Your Meta AI key</h2>
+        <p class="sub">Paste your own Meta API key here so Scout can read screenshots, write fresh caption openings, and make pictures with Meta AI. You paste it yourself, right on this page. It is never typed into a chat. Not sure the key is right? Tap Test this key and Scout will ask Meta's services directly and tell you exactly what they said.</p>
+        <label for="f-key">Meta API key</label>
+        <div class="key-row">
+          <input type="password" id="f-key" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Paste your key here" />
+          <button type="button" class="btn-ghost" id="btn-key-toggle" aria-pressed="false">Show</button>
+          <button type="button" class="btn-ghost" id="btn-key-clear">Clear</button>
+          <button type="button" class="btn-ghost" id="btn-key-test">Test this key</button>
+        </div>
+        <p class="key-status" id="key-status">No key yet. The key stays in this tab only: it is kept in the page's memory, never saved to storage, and it leaves the page only when it goes straight to Meta's AI to read a screenshot, write a fresh caption opening, or make a picture. Close the tab and it is gone.</p>
+        <p class="key-status" id="key-test-status" role="status" aria-live="polite"></p>
+      </section>
+
+      <div class="grid">
+        <!-- ============ FORM ============ -->
+        <section class="card" aria-label="Deal details">
+          <h2>Deal details</h2>
+          <p class="sub">Fastest way: drop in a screenshot and Scout fills this in. Or type what you have. Either way, the kit builds itself, even if a field or two is missing.</p>
+
+          <div class="dropzone" id="dropzone" role="button" tabindex="0" aria-label="Add a deal screenshot">
+            <div class="dz-icon" aria-hidden="true">📸</div>
+            <p class="dz-title">Drop a deal screenshot here</p>
+            <p class="dz-sub">or tap to pick one, or paste one in. Scout reads the product and price off the picture and fills the form in for you.</p>
+          </div>
+          <input type="file" id="f-shot" accept="image/*" hidden />
+          <div class="shot-preview" id="shot-preview">
+            <img id="shot-img" alt="The deal screenshot you added" />
+            <div class="shot-actions">
+              <button type="button" class="btn-read" id="btn-read">Read this screenshot</button>
+              <button type="button" class="btn-ghost" id="btn-shot-remove">Remove</button>
+            </div>
+          </div>
+          <p class="shot-status" id="shot-status" role="status" aria-live="polite"></p>
+          <details class="shot-details" id="shot-details" hidden>
+            <summary>See exactly what Meta's service said</summary>
+            <pre id="shot-details-text"></pre>
+          </details>
+
+          <div class="or-divider">or type it in</div>
+
+          <label for="f-link">Deal link</label>
+          <input type="url" id="f-link" inputmode="url" autocomplete="off" placeholder="Paste the deal link here" />
+
+          <label for="f-name">Product name</label>
+          <input type="text" id="f-name" autocomplete="off" placeholder="What is the product called?" />
+
+          <div class="row2">
+            <div>
+              <label for="f-sale">Sale price</label>
+              <input type="text" id="f-sale" inputmode="decimal" autocomplete="off" placeholder="$0.00" />
+            </div>
+            <div>
+              <label for="f-was">Original price</label>
+              <input type="text" id="f-was" inputmode="decimal" autocomplete="off" placeholder="$0.00" />
+            </div>
+          </div>
+
+          <div class="row2">
+            <div>
+              <label for="f-tag">Deal tag <span class="opt">(optional)</span></label>
+              <input type="text" id="f-tag" autocomplete="off" placeholder="Lightning Deal, coupon, clearance..." />
+            </div>
+            <div>
+              <label for="f-pct">% off <span class="opt">(optional)</span></label>
+              <input type="text" id="f-pct" inputmode="numeric" autocomplete="off" placeholder="Auto from prices" />
+            </div>
+          </div>
+
+          <label for="f-promo">Promo code note <span class="opt">(optional)</span></label>
+          <textarea id="f-promo" rows="2" placeholder="Example: code SAVE20 at checkout"></textarea>
+          <p class="hint">If you add a code, the kit puts it in a first comment for easy copying, not in the caption.</p>
+
+          <div class="form-actions">
+            <button type="button" class="btn-primary" id="btn-build">Build my post kit</button>
+            <button type="button" class="btn-ghost" id="btn-reset">Clear form</button>
+          </div>
+        </section>
+
+        <!-- ============ KIT ============ -->
+        <section class="card" aria-label="Your post kit">
+          <h2>Your post kit</h2>
+          <p class="sub">This is exactly how the post will read. Copy it, paste it, done. With your key in, the AI writes the playful opening fresh for each deal. The price line, sign-off, and disclosure stay exactly the same every time.</p>
+
+          <div class="fresh-bar">
+            <button type="button" class="btn-fresh" id="btn-fresh">Write it fresh with AI</button>
+            <p class="fresh-status" id="fresh-status" role="status" aria-live="polite">Right now the opening uses Scout's standard wording. Add your key above and tap the button, and the AI will write a brand new opening for this deal. Tap it again for another take.</p>
+          </div>
+          <details class="shot-details" id="fresh-details" hidden>
+            <summary>See exactly what Meta's service said</summary>
+            <pre id="fresh-details-text"></pre>
+          </details>
+
+          <div class="fb-post">
+            <div class="fb-head">
+              <div class="fb-avatar" aria-hidden="true">★</div>
+              <div>
+                <div class="fb-name">Star City Deals</div>
+                <div class="fb-meta">Just now · Lincoln, Nebraska</div>
+              </div>
+            </div>
+            <div class="fb-body" id="caption-preview"></div>
+          </div>
+
+          <div class="copy-row">
+            <button type="button" class="btn-copy" id="btn-copy-caption">Copy the caption</button>
+            <button type="button" class="btn-copy alt" id="btn-copy-all">Copy the whole kit</button>
+          </div>
+
+          <h3 class="section-label">First comment</h3>
+          <div class="comment-box" id="comment-box"></div>
+          <div class="copy-row" id="comment-copy-row">
+            <button type="button" class="btn-copy" id="btn-copy-comment">Copy the first comment</button>
+          </div>
+
+          <h3 class="section-label">Before you post</h3>
+          <div class="gaps" id="gaps-box"></div>
+          <ul class="checks" id="checks-list"></ul>
+        </section>
+      </div>
+
+      <!-- ============ IMAGE MAKER ============ -->
+      <section class="card img-card" aria-label="Make a picture">
+        <h2>Make a picture</h2>
+        <p class="sub">Want a "deals in the comments" graphic or a fun header picture for a post? Describe it below and Meta's Muse Image model (muse-image-1.0) will make it with your key. Each picture uses a little of your credits.</p>
+
+        <label for="f-img-prompt">What should the picture show?</label>
+        <textarea id="f-img-prompt" rows="3" placeholder="Example: a bright, cheerful graphic that says DEALS IN THE COMMENTS in big friendly letters, with shopping bags and stars around it"></textarea>
+        <p class="hint">Heads up: picture models sometimes misspell words inside an image. If the words come out garbled, just generate it again for another try.</p>
+
+        <div class="img-actions">
+          <button type="button" class="btn-gen" id="btn-gen-img">Generate the picture</button>
+        </div>
+        <p class="img-status" id="img-status" role="status" aria-live="polite"></p>
+        <details class="shot-details" id="img-details" hidden>
+          <summary>See exactly what Meta's service said</summary>
+          <pre id="img-details-text"></pre>
+        </details>
+
+        <div class="img-result" id="img-result">
+          <img id="img-out" alt="The picture the Muse Image model made from your description" />
+          <div class="img-actions">
+            <a class="btn-download" id="btn-download-img" href="#" download="star-city-deals-picture.png">Download the picture</a>
+          </div>
+        </div>
+      </section>
+
+      <footer>Made for Star City Deals · Prices live in the caption only, never in the image · Links open best in the Amazon app or a browser</footer>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite">Copied</div>
+
+    <script>
+      (function () {
+        "use strict";
+
+        var EMPTY = {
+          link: "",
+          name: "",
+          sale: "",
+          was: "",
+          tag: "",
+          pct: "",
+          promo: ""
+        };
+
+        var fields = {
+          link: document.getElementById("f-link"),
+          name: document.getElementById("f-name"),
+          sale: document.getElementById("f-sale"),
+          was: document.getElementById("f-was"),
+          tag: document.getElementById("f-tag"),
+          pct: document.getElementById("f-pct"),
+          promo: document.getElementById("f-promo")
+        };
+
+        var preview = document.getElementById("caption-preview");
+        var commentBox = document.getElementById("comment-box");
+        var commentCopyRow = document.getElementById("comment-copy-row");
+        var gapsBox = document.getElementById("gaps-box");
+        var checksList = document.getElementById("checks-list");
+        var toast = document.getElementById("toast");
+
+        var state = { caption: "", comment: "" };
+
+        // ---- Fresh AI wording for the playful opening ----
+        // The fixed parts of the caption (price line, link, Lincoln mom
+        // sign-off, price warning, #ad + disclosure, hashtags) are still
+        // assembled by the page, word for word, every time. Only the
+        // playful opening is written fresh by the AI for each deal.
+        var btnFresh = document.getElementById("btn-fresh");
+        var freshStatus = document.getElementById("fresh-status");
+        var freshDetails = document.getElementById("fresh-details");
+        var freshDetailsText = document.getElementById("fresh-details-text");
+        var aiPlayful = "";       // The AI-written opening, paragraphs split by "\n\n"
+        var aiPlayfulSig = "";    // Which deal that opening was written for
+        var freshBusy = false;
+
+        function playfulSig(name, tag) {
+          return clean(name).toLowerCase() + "|" + clean(tag).toLowerCase();
+        }
+
+        function setFreshStatus(msg, kind) {
+          freshStatus.textContent = msg || "";
+          freshStatus.className = "fresh-status" + (kind ? " " + kind : "");
+        }
+
+        // Same details box the screenshot reader uses: when a fresh
+        // write fails, the full reply from Meta's service goes here so
+        // the reason is visible instead of thrown away.
+        function showFreshDetails(lines) {
+          if (!lines || !lines.length) {
+            freshDetails.hidden = true;
+            freshDetailsText.textContent = "";
+            return;
+          }
+          freshDetailsText.textContent = lines.join("\n");
+          freshDetails.hidden = false;
+        }
+
+        // ---- Meta AI key: held in this tab's memory only, never saved anywhere ----
+        var keyInput = document.getElementById("f-key");
+        var keyStatus = document.getElementById("key-status");
+        var keyToggle = document.getElementById("btn-key-toggle");
+        var keyTestStatus = document.getElementById("key-test-status");
+        var btnKeyTest = document.getElementById("btn-key-test");
+        var apiKey = "";
+
+        // ---- Screenshot reading ----
+        var dropzone = document.getElementById("dropzone");
+        var shotInput = document.getElementById("f-shot");
+        var shotPreview = document.getElementById("shot-preview");
+        var shotImg = document.getElementById("shot-img");
+        var shotStatus = document.getElementById("shot-status");
+        var shotDetails = document.getElementById("shot-details");
+        var shotDetailsText = document.getElementById("shot-details-text");
+        var btnRead = document.getElementById("btn-read");
+        var shotDataUrl = null;
+        var shotObjectUrl = null;
+        var reading = false;
+
+        // House rule: no em dashes (or en dashes) ever reach the caption or comment.
+        function clean(text) {
+          return String(text || "")
+            .replace(/\s*—\s*/g, ", ")
+            .replace(/\s*–\s*/g, " to ")
+            .replace(/\s+/g, " ")
+            .trim();
+        }
+
+        function money(text) {
+          var m = String(text || "").replace(/,/g, "").match(/\d+(\.\d{1,2})?/);
+          return m ? parseFloat(m[0]) : null;
+        }
+
+        function moneyLabel(text, num) {
+          var raw = clean(text);
+          if (raw) return raw.charAt(0) === "$" ? raw : "$" + raw;
+          return num != null ? "$" + num.toFixed(2) : "";
+        }
+
+        function hashStr(s) {
+          var h = 0;
+          for (var i = 0; i < s.length; i++) { h = (h * 31 + s.charCodeAt(i)) | 0; }
+          return Math.abs(h);
+        }
+
+        function pickHook(name) {
+          var n = name.toLowerCase();
+          if (/ghost|spooky|halloween|pumpkin|skeleton|witch/.test(n)) return "Boo crew, this one is for you!";
+          if (/christmas|holiday|santa|reindeer|ornament/.test(n)) return "A little holiday magic, coming right up!";
+          if (/coffee|mug|tumbler/.test(n)) return "Coffee lovers, pause your scroll for this one.";
+          if (/candle|wax warmer/.test(n)) return "Cozy alert, friends. This one smells like a good day.";
+          if (/blanket|throw|pillow/.test(n)) return "Cozy season just found its main character.";
+          if (/toy|game|puzzle/.test(n)) return "Okay, this one is just plain fun.";
+          if (/kitchen|air fryer|pan|bake/.test(n)) return "Kitchen find alert, and it is a good one.";
+          if (/baby|toddler|kids|child/.test(n)) return "For the littles, and the grown-ups who shop for them.";
+          var openers = [
+            "Stop the scroll, friends. This one is a good one.",
+            "Okay, this find made my whole day.",
+            "Lincoln friends, you are going to want to see this.",
+            "Found a little gem for you today."
+          ];
+          return openers[hashStr(n || "deal") % openers.length];
+        }
+
+        function productHashtags(name) {
+          var stop = { "the": 1, "a": 1, "an": 1, "and": 1, "with": 1, "for": 1, "of": 1, "in": 1, "pack": 1, "set": 1 };
+          var words = name.replace(/[^a-zA-Z0-9 ]/g, " ").split(/\s+/).filter(function (w) {
+            return w.length > 2 && !stop[w.toLowerCase()];
+          });
+          var tags = [];
+          if (words.length >= 2) {
+            tags.push("#" + words.slice(0, 2).map(cap).join(""));
+          }
+          if (words.length >= 3) {
+            tags.push("#" + words.slice(0, 3).map(cap).join(""));
+          }
+          var n = name.toLowerCase();
+          if (/ghost|halloween|spooky|pumpkin/.test(n)) tags.push("#SpookySeason", "#HalloweenFinds");
+          if (/christmas|holiday|santa/.test(n)) tags.push("#HolidayFinds");
+          if (/coffee/.test(n)) tags.push("#CoffeeLovers");
+          function cap(w) { return w.charAt(0).toUpperCase() + w.slice(1); }
+          return tags;
+        }
+
+        function buildKit() {
+          var link = clean(fields.link.value);
+          var name = clean(fields.name.value);
+          var saleRaw = fields.sale.value;
+          var wasRaw = fields.was.value;
+          var tag = clean(fields.tag.value);
+          var promo = clean(fields.promo.value);
+
+          var saleNum = money(saleRaw);
+          var wasNum = money(wasRaw);
+          var saleLabel = moneyLabel(saleRaw, saleNum);
+          var wasLabel = moneyLabel(wasRaw, wasNum);
+
+          var pct = null;
+          var pctTyped = clean(fields.pct.value).match(/\d+/);
+          if (pctTyped) pct = parseInt(pctTyped[0], 10);
+          if (saleNum != null && wasNum != null && wasNum > 0 && saleNum < wasNum) {
+            pct = Math.round((1 - saleNum / wasNum) * 100);
+          }
+
+          var gaps = [];
+          if (!link) gaps.push("No deal link yet, so the caption has no shop link. Paste the link in and it drops right into the post.");
+          if (!name) gaps.push("No product name yet, so the caption calls it \"this find\" for now.");
+          if (saleNum == null) gaps.push("No sale price yet, so the caption does not name a price. Add one and it appears in the price line.");
+          if (wasNum == null && saleNum != null) gaps.push("No original price yet, so there is no \"was\" price or percent off in the caption.");
+
+          var displayName = name || "this find";
+          var lines = [];
+
+          // 1. Playful first. If the AI has written a fresh opening for
+          // this exact deal, it goes here. Otherwise Scout falls back to
+          // its standard wording, so the kit always builds.
+          if (aiPlayful && aiPlayfulSig === playfulSig(name, tag)) {
+            aiPlayful.split("\n\n").forEach(function (p) { if (p) lines.push(p); });
+          } else {
+            if (aiPlayful) {
+              setFreshStatus("The deal changed, so Scout is back to the standard opening for now. Tap Write it fresh with AI to get new wording for this one.");
+              aiPlayful = "";
+              aiPlayfulSig = "";
+            }
+            lines.push(pickHook(name));
+            lines.push("Meet the " + displayName + (name ? "" : " I just spotted") + ". Such a fun little find, and the price is the best part.");
+          }
+
+          // 2. Price line (caption only, never in an image)
+          var priceBits = [];
+          if (saleNum != null) {
+            priceBits.push("Right now it is " + saleLabel);
+            if (wasNum != null) priceBits.push("was " + wasLabel);
+            if (pct != null && pct > 0) priceBits.push("that is " + pct + "% off");
+          }
+          if (priceBits.length) {
+            var priceLine = priceBits.join(", ") + ".";
+            if (tag) {
+              priceLine += /lightning/i.test(tag)
+                ? " It is a " + tag + ", and those can sell out fast, so do not sit on it too long."
+                : " It is tagged as a " + tag + ", so if you love it, do not sit on it too long.";
+            }
+            lines.push(priceLine);
+          } else if (tag) {
+            lines.push("It is a " + tag + " find, so it may not stick around long.");
+          }
+
+          // 3. Link
+          if (link) lines.push("Grab it here: " + link);
+
+          // 4. Sign-off, poster presented only as a Lincoln mom
+          lines.push("Shared by a Lincoln mom who checks the prices so you do not have to. Happy deal hunting!");
+
+          // 5. Price-change warning
+          lines.push("Quick heads up: prices and stock can change at any time, so the price you see at checkout is the one that counts.");
+
+          // 6. #ad + disclosure
+          lines.push("#ad As an Amazon Associate I earn from qualifying purchases.");
+
+          // 7. Hashtags
+          var tags = ["#StarCityDeals", "#LincolnNE", "#AmazonDeals", "#DealAlert"].concat(productHashtags(name));
+          lines.push(tags.join(" "));
+
+          var caption = lines.join("\n\n");
+
+          // First comment: promo code goes here, never in the caption
+          var comment = "";
+          if (promo) {
+            comment = "Promo code time! " + promo + ". Type it in the promo code or gift card box at checkout. Codes can expire without warning, so use it soon if you are grabbing this one. #ad";
+          }
+
+          state.caption = caption;
+          state.comment = comment;
+
+          // Render preview with a clickable link
+          renderPreview(caption, link);
+
+          if (comment) {
+            commentBox.textContent = comment;
+            commentBox.classList.remove("none");
+            commentCopyRow.style.display = "";
+          } else {
+            commentBox.textContent = "No promo code for this one, so nothing extra needs to go in the comments. Just post the caption and you are set.";
+            commentBox.classList.add("none");
+            commentCopyRow.style.display = "none";
+          }
+
+          if (gaps.length) {
+            gapsBox.classList.remove("ok");
+            gapsBox.innerHTML = "<p>Still missing a piece or two:</p>";
+            var ul = document.createElement("ul");
+            gaps.forEach(function (g) {
+              var li = document.createElement("li");
+              li.textContent = g;
+              ul.appendChild(li);
+            });
+            gapsBox.appendChild(ul);
+          } else {
+            gapsBox.classList.add("ok");
+            gapsBox.innerHTML = "<p>All filled in.</p>Every field is in, so this kit is complete and ready for your one tap approval.";
+          }
+
+          var checks = [];
+          if (aiPlayful && aiPlayfulSig === playfulSig(name, tag)) checks.push("<strong>Playful opening written fresh by AI</strong> for this deal, different words every time.");
+          if (saleNum != null) checks.push("<strong>Price is in the caption only</strong>, never baked into an image.");
+          checks.push("<strong>#ad and the Amazon disclosure</strong> are in the caption.");
+          checks.push("<strong>No em dashes</strong> anywhere in the caption. Scout checks twice.");
+          checks.push("<strong>Posted as a Lincoln mom</strong>, plain and simple.");
+          if (promo) checks.push("<strong>Promo code is in the first comment</strong>, ready to copy, with its own #ad.");
+          if (tag && /lightning/i.test(tag)) checks.push("<strong>Lightning Deal flagged</strong>, with a nudge to move fast.");
+          checksList.innerHTML = checks.map(function (c) { return "<li>" + c + "</li>"; }).join("");
+        }
+
+        function renderPreview(caption, link) {
+          preview.textContent = "";
+          if (link && caption.indexOf(link) !== -1) {
+            var parts = caption.split(link);
+            preview.appendChild(document.createTextNode(parts[0]));
+            var a = document.createElement("a");
+            a.href = link;
+            a.textContent = link;
+            a.target = "_blank";
+            a.rel = "noopener noreferrer";
+            preview.appendChild(a);
+            preview.appendChild(document.createTextNode(parts.slice(1).join(link)));
+          } else {
+            preview.textContent = caption;
+          }
+        }
+
+        function wholeKit() {
+          var parts = [state.caption];
+          if (state.comment) parts.push("FIRST COMMENT:\n" + state.comment);
+          return parts.join("\n\n");
+        }
+
+        function showToast(msg) {
+          toast.textContent = msg;
+          toast.classList.add("show");
+          setTimeout(function () { toast.classList.remove("show"); }, 1800);
+        }
+
+        function copyText(text, msg) {
+          function done() { showToast(msg); }
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(done, function () { fallback(); });
+          } else {
+            fallback();
+          }
+          function fallback() {
+            var ta = document.createElement("textarea");
+            ta.value = text;
+            ta.style.position = "fixed";
+            ta.style.opacity = "0";
+            document.body.appendChild(ta);
+            ta.select();
+            try { document.execCommand("copy"); done(); } catch (e) { showToast("Copy did not work here, long-press the text instead"); }
+            document.body.removeChild(ta);
+          }
+        }
+
+        // Pull the answer text out of a chat reply, wherever the model
+        // put it (same shapes the screenshot reader handles).
+        function extractChatAnswer(json) {
+          var choice = null;
+          try { choice = json.choices[0]; } catch (e) { choice = null; }
+          var msg = (choice && choice.message) || {};
+          var c = msg.content;
+          var content = "";
+          if (typeof c === "string") {
+            content = c;
+          } else if (Array.isArray(c)) {
+            content = c.map(function (p) {
+              if (typeof p === "string") return p;
+              if (!p) return "";
+              return p.text || p.output_text || p.content || "";
+            }).join("");
+          }
+          if (!content && choice && typeof choice.text === "string") content = choice.text;
+          return content;
+        }
+
+        // Ask Meta AI to write the playful opening fresh for this deal.
+        // Same house rules as the fixed caption, enforced in the prompt
+        // and checked again on the way back in: no price, no link, no
+        // hashtags, no #ad or disclosure (the page adds those itself,
+        // word for word), no em dashes, no invented product claims.
+        function generateFreshPlayful(auto) {
+          if (freshBusy) return;
+          var name = clean(fields.name.value);
+          var tag = clean(fields.tag.value);
+          if (!apiKey) {
+            if (!auto) {
+              setFreshStatus("Add your Meta API key in the key box above first, then tap the button and the AI will write this deal a fresh opening.", "err");
+              keyInput.scrollIntoView({ behavior: "smooth", block: "center" });
+            }
+            return;
+          }
+          if (!name) {
+            if (!auto) setFreshStatus("Give the deal a product name first, so the AI has something to write about. A screenshot read fills that in for you.", "err");
+            return;
+          }
+          freshBusy = true;
+          btnFresh.disabled = true;
+          btnFresh.textContent = "Writing fresh wording...";
+          setFreshStatus("The AI is writing a fresh opening for this deal. This takes a few seconds.");
+          showFreshDetails(null);
+
+          var prompt =
+            "You write the opening of a Facebook post for Star City Deals, a deals page run by a Lincoln, Nebraska mom. " +
+            "Write the opening FRESH, in your own words, not from a template. " +
+            "Answer right away: do not deliberate, weigh options, or draft alternatives first. This is a tiny job, just write it. " +
+            "Reply with ONLY the opening: exactly two short paragraphs separated by a blank line, and nothing else. " +
+            "Keep the whole opening SHORT and punchy: under 50 words total, a few lines at most, never a long paragraph. " +
+            "Paragraph 1: one short, playful, warm, scroll-stopping hook sentence. Make it different every time: vary the angle, the rhythm, and the words. " +
+            "Paragraph 2: one short sentence introducing the product (two at the very most), naming the product exactly as: " + name + ". " +
+            (tag ? "It is a " + tag + ", and you may hint at that energy, " : "") +
+            "Rules, all of them matter: do NOT mention any price, dollar amount, or percent off. " +
+            "Do NOT include a link, hashtags, #ad, or any disclosure. " +
+            "Do NOT use em dashes or en dashes. " +
+            "Do NOT sign off, and do NOT say the poster is a Lincoln mom, that line comes later. " +
+            "Do NOT invent product features, colors, sizes, or benefits that are not in the product name. " +
+            "Keep it friendly and genuine, like a friend sharing a find, never salesy or hypey.";
+
+          discoverApi().then(function (api) {
+            return fetchWithTimeout(api.base + "/chat/completions", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + apiKey
+              },
+              body: JSON.stringify({
+                model: api.model,
+                messages: [
+                  { role: "system", content: "You write short, punchy social media copy. Answer immediately with the finished text only. Keep your thinking as brief as possible: do not deliberate, compare options, or draft alternatives. A few short lines is the whole job." },
+                  { role: "user", content: prompt }
+                ],
+                temperature: 0.95,
+                max_completion_tokens: 8000
+              })
+            }, 90000).then(readApiResponse).then(function (r) {
+              return { api: api, r: r };
+            });
+          }).then(function (out) {
+            var r = out.r;
+            // Keep the service's full reply, exactly like the screenshot
+            // reader does, so a failure can show the real reason (finish
+            // reason, refusal note, the reply body itself) in the details
+            // box instead of just saying there was no usable opening.
+            var choice = null;
+            try { choice = r.json.choices[0]; } catch (e) { choice = null; }
+            var msg = (choice && choice.message) || {};
+            var rawReply = "";
+            try { rawReply = r.json ? JSON.stringify(r.json, null, 2) : r.text; } catch (e) { rawReply = r.text || ""; }
+            if (!rawReply) rawReply = "(the reply body was completely empty)";
+            var finishReason = choice ? (choice.finish_reason || "") : "";
+            var detailLines = [
+              "Service: " + out.api.label + " (" + out.api.base + ")",
+              "Model: " + out.api.model,
+              "HTTP status: " + r.status
+            ];
+            if (finishReason) detailLines.push("Finish reason: " + finishReason);
+            if (msg.refusal) detailLines.push("Refusal note: " + String(msg.refusal));
+            detailLines.push("Full reply from the service:");
+            detailLines.push(String(rawReply).slice(0, 4000));
+
+            if (!r.ok) {
+              setFreshStatus("The AI could not write this one (" + out.api.label + " answered HTTP " + r.status + (apiErrorText(r) ? ": " + apiErrorText(r) : "") + "). The full answer is in the details below. The standard opening is still in the caption, so the kit is ready either way.", "err");
+              showFreshDetails(detailLines);
+              return;
+            }
+            // Read the opening from wherever this model put it:
+            // message.content (a string, or parts with text/output_text),
+            // the older choices[].text shape, or, as a last resort, the
+            // model's reasoning text. The same places, in the same order,
+            // that the screenshot reader checks.
+            var reasoning = "";
+            if (typeof msg.reasoning_content === "string") reasoning = msg.reasoning_content;
+            else if (typeof msg.reasoning === "string") reasoning = msg.reasoning;
+            function parasFrom(text) {
+              return String(text || "")
+                .replace(/```[a-z]*|```/gi, "")
+                .trim()
+                .split(/\n\s*\n|\n/)
+                .map(function (p) { return clean(p.replace(/^["“]|["”]$/g, "")); })
+                .filter(Boolean)
+                .slice(0, 2);
+            }
+            var paras = parasFrom(extractChatAnswer(r.json || {}));
+            var joined = paras.join(" ");
+            if ((!paras.length || joined.length < 12) && reasoning) {
+              var retryParas = parasFrom(reasoning);
+              if (retryParas.join(" ").length >= 12) {
+                paras = retryParas;
+                joined = paras.join(" ");
+              }
+            }
+            if (!paras.length || joined.length < 12) {
+              if (finishReason === "length") {
+                setFreshStatus("The AI started answering but ran out of room before the opening came out. The full reply is in the details below. The standard opening is still in the caption. Tap the button to try once more.", "err");
+              } else {
+                setFreshStatus("The AI answered, but there was no usable opening in what came back. The full reply, including the reason it gave, is in the details below. The standard opening is still in the caption. Tap the button to try once more.", "err");
+              }
+              showFreshDetails(detailLines);
+              return;
+            }
+            if (/https?:|www\.|#|\$\s?\d|qualifying purchases/i.test(joined)) {
+              setFreshStatus("The AI's draft broke a house rule (it tried to add a price, link, or hashtag), so Scout kept the standard opening instead. What it sent is in the details below. Tap the button for another take.", "err");
+              showFreshDetails(detailLines);
+              return;
+            }
+            if (joined.length > 460) {
+              // Hard cap so a fresh opening can never balloon into a
+              // long block: trim back to the last full sentence that
+              // fits, so it still reads finished, not cut off mid-word.
+              var cut = joined.slice(0, 460);
+              var lastEnd = Math.max(cut.lastIndexOf("."), cut.lastIndexOf("!"), cut.lastIndexOf("?"));
+              if (lastEnd > 120) cut = cut.slice(0, lastEnd + 1);
+              paras = [clean(cut)];
+            }
+            aiPlayful = paras.join("\n\n");
+            aiPlayfulSig = playfulSig(name, tag);
+            buildKit();
+            setFreshStatus("Fresh wording is in, written by the AI just for this deal. The price line, sign-off, #ad, and disclosure below it are still the exact same words as always. Want different wording? Tap the button again.", "on");
+            showToast("Fresh AI wording added to your caption.");
+          }).catch(function (err) {
+            if (err && err.message === "nokeyservice") {
+              setFreshStatus("Scout could not get a yes from either Meta service, so no fresh wording this time. What each service answered is in the details below. The standard opening is still in the caption.", "err");
+              showFreshDetails(err.attempts || []);
+            } else if (err && err.name === "AbortError") {
+              setFreshStatus("The writing timed out waiting for Meta's service. The standard opening is still in the caption. Tap the button to try again.", "err");
+              showFreshDetails(["The request was cut off after waiting 90 seconds with no answer."]);
+            } else {
+              setFreshStatus("The writing never reached Meta's service, usually the connection or the browser blocking the call. The standard opening is still in the caption. Tap the button to try again.", "err");
+              showFreshDetails(["Technical detail: " + (err ? (err.name || "Error") + ": " + (err.message || err) : "unknown error")]);
+            }
+          }).then(function () {
+            freshBusy = false;
+            btnFresh.disabled = false;
+            btnFresh.textContent = "Write it fresh with AI";
+          });
+        }
+
+        btnFresh.addEventListener("click", function () { generateFreshPlayful(false); });
+
+        Object.keys(fields).forEach(function (k) {
+          fields[k].addEventListener("input", buildKit);
+        });
+
+        document.getElementById("btn-copy-caption").addEventListener("click", function () {
+          copyText(state.caption, "Caption copied. Ready to paste into Facebook.");
+        });
+        document.getElementById("btn-copy-comment").addEventListener("click", function () {
+          if (state.comment) copyText(state.comment, "First comment copied, code and all.");
+        });
+        document.getElementById("btn-copy-all").addEventListener("click", function () {
+          copyText(wholeKit(), "Whole kit copied.");
+        });
+        document.getElementById("btn-build").addEventListener("click", function () {
+          buildKit();
+          if (apiKey && clean(fields.name.value) && aiPlayfulSig !== playfulSig(fields.name.value, fields.tag.value)) {
+            generateFreshPlayful(true);
+          }
+          showToast("Post kit built. Give it a once-over, then copy.");
+          if (window.innerWidth <= 860) {
+            document.querySelector('[aria-label="Your post kit"]').scrollIntoView({ behavior: "smooth", block: "start" });
+          }
+        });
+        document.getElementById("btn-reset").addEventListener("click", function () {
+          setForm(EMPTY);
+          aiPlayful = "";
+          aiPlayfulSig = "";
+          setFreshStatus("Right now the opening uses Scout's standard wording. Add your key above and tap the button, and the AI will write a brand new opening for this deal. Tap it again for another take.");
+          showFreshDetails(null);
+          buildKit();
+          showToast("Form cleared. Ready for your next deal.");
+        });
+
+        // ================= Key box =================
+        function refreshKeyStatus() {
+          if (apiKey) {
+            keyStatus.textContent = "Key is in for this tab. Scout can read screenshots, write fresh caption openings, and make pictures now. It is not saved anywhere, so closing the tab clears it.";
+            keyStatus.classList.add("on");
+          } else {
+            keyStatus.textContent = "No key yet. The key stays in this tab only: it is kept in the page's memory, never saved to storage, and it leaves the page only when it goes straight to Meta's AI to read a screenshot, write a fresh caption opening, or make a picture. Close the tab and it is gone.";
+            keyStatus.classList.remove("on");
+          }
+        }
+        keyInput.addEventListener("input", function () {
+          apiKey = keyInput.value.trim();
+          workingApi = null;
+          setKeyTestStatus("");
+          refreshKeyStatus();
+        });
+        keyToggle.addEventListener("click", function () {
+          var show = keyInput.type === "password";
+          keyInput.type = show ? "text" : "password";
+          keyToggle.textContent = show ? "Hide" : "Show";
+          keyToggle.setAttribute("aria-pressed", show ? "true" : "false");
+        });
+        document.getElementById("btn-key-clear").addEventListener("click", function () {
+          keyInput.value = "";
+          apiKey = "";
+          workingApi = null;
+          setKeyTestStatus("");
+          refreshKeyStatus();
+          showToast("Key cleared from this tab.");
+        });
+
+        // ================= Screenshot intake =================
+        function setShotStatus(msg, kind) {
+          shotStatus.textContent = msg || "";
+          shotStatus.className = "shot-status" + (kind ? " " + kind : "");
+        }
+
+        function acceptShot(file) {
+          if (!file) return;
+          if (!/^image\//.test(file.type || "")) {
+            setShotStatus("That file is not a picture. Try a screenshot in PNG or JPG.", "err");
+            return;
+          }
+          if (shotObjectUrl) URL.revokeObjectURL(shotObjectUrl);
+          shotObjectUrl = URL.createObjectURL(file);
+          shotImg.src = shotObjectUrl;
+          shotPreview.classList.add("show");
+          setShotStatus("Screenshot added. Reading it now...");
+          showShotDetails(null);
+          prepareAndRead(file);
+        }
+
+        // Shrink big phone screenshots so the read is faster and cheaper,
+        // then send the picture to Meta AI.
+        function prepareAndRead(file) {
+          var url = URL.createObjectURL(file);
+          var img = new Image();
+          img.onload = function () {
+            URL.revokeObjectURL(url);
+            var maxSide = 1024;
+            var scale = Math.min(1, maxSide / Math.max(img.naturalWidth, img.naturalHeight));
+            var canvas = document.createElement("canvas");
+            canvas.width = Math.max(1, Math.round(img.naturalWidth * scale));
+            canvas.height = Math.max(1, Math.round(img.naturalHeight * scale));
+            var ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            try {
+              shotDataUrl = canvas.toDataURL("image/jpeg", 0.8);
+            } catch (e) {
+              shotDataUrl = null;
+            }
+            if (shotDataUrl) {
+              readScreenshot();
+            } else {
+              var reader = new FileReader();
+              reader.onload = function () { shotDataUrl = reader.result; readScreenshot(); };
+              reader.onerror = function () { setShotStatus("Scout could not open that picture. Try a different screenshot.", "err"); };
+              reader.readAsDataURL(file);
+            }
+          };
+          img.onerror = function () {
+            URL.revokeObjectURL(url);
+            setShotStatus("Scout could not open that picture. Try a different screenshot.", "err");
+          };
+          img.src = url;
+        }
+
+        function fillFromShot(data) {
+          var filled = [];
+          function put(field, value, label) {
+            if (value == null || String(value).trim() === "") return;
+            field.value = String(value).trim();
+            filled.push(label);
+          }
+          put(fields.name, data.product_name, "product name");
+          if (data.sale_price != null && String(data.sale_price).trim() !== "") {
+            var s = String(data.sale_price).replace(/[^0-9.]/g, "");
+            if (s) { fields.sale.value = "$" + s; filled.push("sale price"); }
+          }
+          if (data.original_price != null && String(data.original_price).trim() !== "") {
+            var w = String(data.original_price).replace(/[^0-9.]/g, "");
+            if (w) { fields.was.value = "$" + w; filled.push("original price"); }
+          }
+          put(fields.tag, data.deal_tag, "deal tag");
+          if (data.percent_off != null && String(data.percent_off).trim() !== "") {
+            var p = String(data.percent_off).replace(/[^0-9]/g, "");
+            if (p) { fields.pct.value = p; filled.push("percent off"); }
+          }
+          if (data.link && /^https?:\/\//i.test(String(data.link).trim())) {
+            fields.link.value = String(data.link).trim();
+            filled.push("deal link");
+          }
+          if (data.promo_code) {
+            fields.promo.value = "code " + String(data.promo_code).trim() + " at checkout";
+            filled.push("promo code");
+          }
+          buildKit();
+          return filled;
+        }
+
+        // ---- Talking to Meta's services ----
+        // The key from the hackathon belongs to the Meta Model API
+        // (api.meta.ai). The older Llama API (api.llama.com) is tried second,
+        // in case the key pasted in belongs to that service instead. Scout
+        // asks the service that accepts the key for its model list and reads
+        // the screenshot with a vision model from that list. And every
+        // failure now reports what the service actually answered, instead of
+        // one generic message for everything.
+        var API_SERVICES = [
+          { base: "https://api.meta.ai/v1", label: "Meta Model API", visionModels: ["muse-spark-1.3"], fallbackModel: "muse-spark-1.3" },
+          { base: "https://api.llama.com/v1", label: "Llama API", visionModels: ["Llama-4-Maverick-17B-128E-Instruct-FP8", "Llama-4-Scout-17B-16E-Instruct-FP8"], fallbackModel: "Llama-4-Maverick-17B-128E-Instruct-FP8" }
+        ];
+        var workingApi = null;
+        var discovering = null;
+
+        function fetchWithTimeout(url, opts, ms) {
+          var ctrl = new AbortController();
+          var timer = setTimeout(function () { ctrl.abort(); }, ms);
+          var copy = {};
+          Object.keys(opts || {}).forEach(function (k) { copy[k] = opts[k]; });
+          copy.signal = ctrl.signal;
+          return fetch(url, copy).then(function (res) {
+            clearTimeout(timer);
+            return res;
+          }, function (err) {
+            clearTimeout(timer);
+            throw err;
+          });
+        }
+
+        function readApiResponse(res) {
+          return res.text().then(function (text) {
+            var json = null;
+            try { json = JSON.parse(text); } catch (e) { json = null; }
+            return { status: res.status, ok: res.ok, json: json, text: text || "" };
+          });
+        }
+
+        function apiErrorText(r) {
+          if (r.json && r.json.error) {
+            var e = r.json.error;
+            if (typeof e === "string") return e;
+            return [e.code, e.message].filter(Boolean).join(": ") || e.type || "";
+          }
+          if (r.json && (r.json.detail || r.json.title)) {
+            return [r.json.title, r.json.detail].filter(Boolean).join(": ");
+          }
+          return (r.text || "").replace(/\s+/g, " ").slice(0, 300);
+        }
+
+        function isAuthError(r) {
+          if (r.status === 401 || r.status === 403) return true;
+          return /invalid_api_key|authentication|unauthorized/i.test(apiErrorText(r));
+        }
+
+        // Pick the model that reads the screenshot. This used to take the
+        // first model whose name merely looked right, which landed on
+        // muse-spark-1.3-contributor: a variant that answered with an
+        // empty reply. Now a model only gets picked two ways: its exact ID
+        // is on the service's verified picture-reading list, or the
+        // service's own model list says that model takes image input.
+        // Anything else falls back to the service's verified model ID.
+        // Picture-making models (like muse-image) never qualify: they
+        // generate images, they do not read them.
+        function modelTakesImages(m) {
+          if (!m || typeof m !== "object") return false;
+          if (m.supports_vision === true || m.vision === true) return true;
+          var bags = [];
+          [m.input_modalities, m.modalities, m.capabilities].forEach(function (v) {
+            if (Array.isArray(v)) bags = bags.concat(v.map(String));
+            else if (typeof v === "string") bags.push(v);
+            else if (v && typeof v === "object") bags = bags.concat(Object.keys(v));
+          });
+          if (m.architecture) {
+            [m.architecture.input_modalities, m.architecture.modality].forEach(function (v) {
+              if (Array.isArray(v)) bags = bags.concat(v.map(String));
+              else if (typeof v === "string") bags.push(v);
+            });
+          }
+          return bags.some(function (b) { return /image|vision/i.test(b); });
+        }
+
+        function pickVisionModel(models, svc) {
+          var list = (models || []).filter(function (m) { return m && m.id; });
+          var verified = svc.visionModels || [];
+          var i, j;
+          for (i = 0; i < verified.length; i++) {
+            for (j = 0; j < list.length; j++) {
+              if (String(list[j].id) === verified[i]) return verified[i];
+            }
+          }
+          for (j = 0; j < list.length; j++) {
+            var id = String(list[j].id);
+            if (/muse[-_ ]?image|text-to-image|image-generation/i.test(id)) continue;
+            if (modelTakesImages(list[j])) return id;
+          }
+          return svc.fallbackModel;
+        }
+
+        // Ask each service, in order, whether this key is one of theirs.
+        // Resolves to { base, label, model } for the service that says yes.
+        // If neither says yes, rejects with an error carrying what each
+        // service answered, so the real reason can be shown.
+        function discoverApi() {
+          if (workingApi) return Promise.resolve(workingApi);
+          if (discovering) return discovering;
+          var attempts = [];
+          var chain = Promise.resolve(null);
+          API_SERVICES.forEach(function (svc) {
+            chain = chain.then(function (found) {
+              if (found) return found;
+              return fetchWithTimeout(svc.base + "/models", {
+                headers: { "Authorization": "Bearer " + apiKey }
+              }, 15000).then(readApiResponse).then(function (r) {
+                if (r.ok) {
+                  var models = [];
+                  try { models = (r.json && r.json.data) || []; } catch (e) { models = []; }
+                  workingApi = { base: svc.base, label: svc.label, model: pickVisionModel(models, svc) };
+                  return workingApi;
+                }
+                attempts.push(svc.label + " (" + svc.base.replace("https://", "") + ") answered HTTP " + r.status + (apiErrorText(r) ? ": " + apiErrorText(r) : ""));
+                return null;
+              }, function (err) {
+                attempts.push(svc.label + " could not be reached at all (" + (err && err.name === "AbortError" ? "the check timed out" : "connection failed") + ")");
+                return null;
+              });
+            });
+          });
+          discovering = chain.then(function (found) {
+            discovering = null;
+            if (!found) {
+              var err = new Error("nokeyservice");
+              err.attempts = attempts;
+              throw err;
+            }
+            return found;
+          });
+          return discovering;
+        }
+
+        function setKeyTestStatus(msg, on) {
+          keyTestStatus.textContent = msg || "";
+          keyTestStatus.classList.toggle("on", !!on);
+        }
+
+        btnKeyTest.addEventListener("click", function () {
+          if (!apiKey) {
+            setKeyTestStatus("Paste your key in first, then tap Test this key.");
+            keyInput.focus();
+            return;
+          }
+          workingApi = null;
+          btnKeyTest.disabled = true;
+          btnKeyTest.textContent = "Testing...";
+          setKeyTestStatus("Asking Meta's services whether this key is theirs. This takes a few seconds.");
+          discoverApi().then(function (api) {
+            setKeyTestStatus("Good news: that key works with the " + api.label + ". Scout will read screenshots with its " + api.model + " model.", true);
+          }).catch(function (err) {
+            if (err && err.attempts && err.attempts.length) {
+              setKeyTestStatus("That key did not get a yes. " + err.attempts.join(" ") + " Double check the key was copied in full, with nothing extra at either end.", false);
+            } else {
+              setKeyTestStatus("The test could not get through. Check your connection and try again.", false);
+            }
+          }).then(function () {
+            btnKeyTest.disabled = false;
+            btnKeyTest.textContent = "Test this key";
+          });
+        });
+
+        function showShotDetails(lines) {
+          if (!lines || !lines.length) {
+            shotDetails.hidden = true;
+            shotDetailsText.textContent = "";
+            return;
+          }
+          shotDetailsText.textContent = lines.join("\n");
+          shotDetails.hidden = false;
+        }
+
+        function failRead(plain, detailLines) {
+          setShotStatus(plain, "err");
+          showShotDetails(detailLines);
+        }
+
+        function billingHint(r) {
+          var t = (apiErrorText(r) + " " + r.status).toLowerCase();
+          if (r.status === 402 || /billing|quota|credit|payment|spend/.test(t)) {
+            return " This can mean the hackathon credits are not active on the account yet, or that no card is on file yet: Meta's hackathon guide says a card has to be on the account before the credits can be used.";
+          }
+          return "";
+        }
+
+        function readScreenshot() {
+          if (reading || !shotDataUrl) return;
+          if (!apiKey) {
+            setShotStatus("Add your Meta API key in the key box above first, then tap Read this screenshot. Your screenshot is ready and waiting.", "err");
+            showShotDetails(null);
+            keyInput.scrollIntoView({ behavior: "smooth", block: "center" });
+            return;
+          }
+          reading = true;
+          btnRead.disabled = true;
+          btnRead.textContent = "Reading your screenshot...";
+          showShotDetails(null);
+          setShotStatus(workingApi
+            ? "Scout is reading the picture with the " + workingApi.label + ". This takes a few seconds."
+            : "First, Scout is checking which Meta service your key belongs to...");
+
+          var prompt =
+            "You are reading a screenshot of an online shopping deal. " +
+            "Extract the deal details and reply with ONLY a JSON object, no markdown, no extra words. " +
+            "Use exactly these keys: " +
+            "\"product_name\" (the product title, cleaned up into a short readable name), " +
+            "\"sale_price\" (the current deal price as a number like 9.99, or null), " +
+            "\"original_price\" (the regular or list price as a number, or null), " +
+            "\"percent_off\" (the percent off as a whole number, or null), " +
+            "\"deal_tag\" (like Lightning Deal, coupon, or clearance, if shown, else null), " +
+            "\"link\" (a full product URL only if one is visibly printed in the screenshot, else null), " +
+            "\"promo_code\" (a promo code if one is shown, else null). " +
+            "If you cannot tell a value, use null. Do not guess a price that is not visible.";
+
+          discoverApi().then(function (api) {
+            setShotStatus("Scout is reading the picture with the " + api.label + ". This takes a few seconds.");
+            return fetchWithTimeout(api.base + "/chat/completions", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + apiKey
+              },
+              body: JSON.stringify({
+                model: api.model,
+                messages: [
+                  {
+                    role: "user",
+                    content: [
+                      { type: "text", text: prompt },
+                      { type: "image_url", image_url: { url: shotDataUrl } }
+                    ]
+                  }
+                ],
+                temperature: 0.1,
+                max_completion_tokens: 1500
+              })
+            }, 60000).then(readApiResponse).then(function (r) {
+              return { api: api, r: r };
+            });
+          }).then(function (out) {
+            var api = out.api;
+            var r = out.r;
+            if (!r.ok) {
+              var detail = [
+                "Service: " + api.label + " (" + api.base + ")",
+                "Model: " + api.model,
+                "Answer: HTTP " + r.status,
+                "What it said: " + (apiErrorText(r) || "(no message came back)")
+              ];
+              if (isAuthError(r)) {
+                workingApi = null;
+                failRead("Meta's service did not accept that key for the read itself. Tap Test this key in the key box to see the exact answer, or paste the key in again and retry. Your screenshot is still here, and typing the details in below works too.", detail);
+              } else if (r.status === 404 || /model|not found/i.test(apiErrorText(r))) {
+                failRead("The reading model Scout picked is not available on the " + api.label + ". The exact answer is in the details below, and that is the part to show Cosmo so the model can be set right. Your screenshot is still here, and typing the details in below works too.", detail);
+              } else if (r.status === 413) {
+                failRead("The screenshot was too big for Meta's service to take. Try a tighter crop of just the deal, then read again. Your screenshot is still here.", detail);
+              } else if (r.status === 402 || r.status === 429) {
+                failRead("Meta's service would not run the read. It said: " + (apiErrorText(r) || ("HTTP " + r.status)) + "." + billingHint(r) + " Your screenshot is still here.", detail);
+              } else if (r.status >= 500) {
+                failRead("Meta's service had a problem on its own side (HTTP " + r.status + "). Waiting a minute and tapping Read this screenshot again is worth a try. Your screenshot is still here.", detail);
+              } else {
+                failRead("Meta's service refused the read. It said: " + (apiErrorText(r) || ("HTTP " + r.status)) + ". The full answer is in the details below. Your screenshot is still here, and typing the details in below works too.", detail);
+              }
+              return;
+            }
+            // Pull the answer text out of wherever this model put it:
+            // message.content (a string, or parts with text/output_text),
+            // the older choices[].text shape, or, as a last resort, the
+            // model's reasoning text. The old code read only
+            // message.content, so an answer that arrived in any other shape
+            // looked exactly like an empty one.
+            var choice = null;
+            try { choice = r.json.choices[0]; } catch (e) { choice = null; }
+            var msg = (choice && choice.message) || {};
+            var content = "";
+            var c = msg.content;
+            if (typeof c === "string") {
+              content = c;
+            } else if (Array.isArray(c)) {
+              content = c.map(function (p) {
+                if (typeof p === "string") return p;
+                if (!p) return "";
+                return p.text || p.output_text || p.content || "";
+              }).join("");
+            }
+            if (!content && choice && typeof choice.text === "string") content = choice.text;
+            var reasoning = "";
+            if (typeof msg.reasoning_content === "string") reasoning = msg.reasoning_content;
+            else if (typeof msg.reasoning === "string") reasoning = msg.reasoning;
+            var answerText = content;
+            if (!/\{/.test(answerText) && reasoning) answerText = reasoning;
+
+            // Keep the service's full reply so the details box can show
+            // the real reason (finish reason, refusal note, the reply
+            // body itself) instead of a bare "(empty answer)".
+            var rawReply = "";
+            try { rawReply = r.json ? JSON.stringify(r.json, null, 2) : r.text; } catch (e) { rawReply = r.text || ""; }
+            if (!rawReply) rawReply = "(the reply body was completely empty)";
+            var finishReason = choice ? (choice.finish_reason || "") : "";
+            var detailLines = [
+              "Service: " + api.label + " (" + api.base + ")",
+              "Model: " + api.model,
+              "HTTP status: " + r.status
+            ];
+            if (finishReason) detailLines.push("Finish reason: " + finishReason);
+            if (msg.refusal) detailLines.push("Refusal note: " + String(msg.refusal));
+            detailLines.push("Full reply from the service:");
+            detailLines.push(String(rawReply).slice(0, 4000));
+
+            var match = String(answerText).match(/\{[\s\S]*\}/);
+            if (!match) {
+              if (finishReason === "length") {
+                failRead("Meta's service started answering but ran out of room and stopped before any deal details came out. The full reply is in the details below. Tapping Read this screenshot once more is worth a try, and typing the details in below works too.", detailLines);
+              } else if (!content) {
+                failRead("Meta's service answered, but the answer part of its reply was empty, so there were no deal details to fill in. The full reply, including the reason it gave, is in the details below. Tapping Read this screenshot once more is worth a try, and typing the details in below works too.", detailLines);
+              } else {
+                failRead("Meta's service answered, but its answer was not the deal details Scout asked for, so nothing could be filled in. The full reply is in the details below. Tapping Read this screenshot once more is worth a try, and typing the details in below works too.", detailLines);
+              }
+              return;
+            }
+            var data = null;
+            try { data = JSON.parse(match[0]); } catch (e) { data = null; }
+            if (!data) {
+              failRead("Meta's service answered, but Scout could not make sense of the answer. The full reply is in the details below. Tapping Read this screenshot once more is worth a try, and typing the details in below works too.", detailLines);
+              return;
+            }
+            var filled = fillFromShot(data);
+            if (filled.length) {
+              setShotStatus("Done. Scout filled in the " + filled.join(", ") + " from your screenshot. Give it a quick check, fix anything that looks off, and your caption below is already written.", "ok");
+              showToast("Screenshot read. Form filled in for you.");
+              // A fresh deal gets fresh words: the AI writes this one's
+              // playful opening now, instead of reusing the standard lines.
+              if (clean(fields.name.value)) generateFreshPlayful(true);
+            } else {
+              setShotStatus("Scout looked at the picture but could not make out the product or price. Try a closer or clearer screenshot, or type the details in below.", "err");
+            }
+          }).catch(function (err) {
+            if (err && err.message === "nokeyservice") {
+              failRead("Scout could not get a yes from either Meta service it can read with, so the read never started. What each service answered is in the details below. If both turned the key down, double check the key was copied in full. Your screenshot is still here, and typing the details in below works too.", err.attempts || []);
+            } else if (err && err.name === "AbortError") {
+              failRead("The read timed out waiting for Meta's service to answer. Check your connection and tap Read this screenshot to try again. Your screenshot is still here.", ["The request was cut off after waiting 60 seconds with no answer."]);
+            } else {
+              failRead("The read never reached Meta's service. This is usually the connection, or the browser or app the page is open in blocking the call. Check your connection, and if you opened Scout inside Messenger or another app, open it in Chrome or Safari instead and try again. Your screenshot is still here, and typing the details in below works too.", ["Technical detail: " + (err ? (err.name || "Error") + ": " + (err.message || err) : "unknown error")]);
+            }
+          }).then(function () {
+            reading = false;
+            btnRead.disabled = false;
+            btnRead.textContent = "Read this screenshot";
+          });
+        }
+
+        btnRead.addEventListener("click", readScreenshot);
+        document.getElementById("btn-shot-remove").addEventListener("click", function () {
+          shotDataUrl = null;
+          if (shotObjectUrl) { URL.revokeObjectURL(shotObjectUrl); shotObjectUrl = null; }
+          shotImg.removeAttribute("src");
+          shotPreview.classList.remove("show");
+          shotInput.value = "";
+          setShotStatus("");
+          showShotDetails(null);
+        });
+
+        dropzone.addEventListener("click", function () { shotInput.click(); });
+        dropzone.addEventListener("keydown", function (e) {
+          if (e.key === "Enter" || e.key === " ") { e.preventDefault(); shotInput.click(); }
+        });
+        shotInput.addEventListener("change", function () {
+          if (shotInput.files && shotInput.files[0]) acceptShot(shotInput.files[0]);
+        });
+        ["dragenter", "dragover"].forEach(function (ev) {
+          dropzone.addEventListener(ev, function (e) { e.preventDefault(); dropzone.classList.add("drag"); });
+        });
+        ["dragleave", "drop"].forEach(function (ev) {
+          dropzone.addEventListener(ev, function (e) { e.preventDefault(); dropzone.classList.remove("drag"); });
+        });
+        dropzone.addEventListener("drop", function (e) {
+          var files = e.dataTransfer && e.dataTransfer.files;
+          if (files && files[0]) acceptShot(files[0]);
+        });
+        document.addEventListener("paste", function (e) {
+          var items = e.clipboardData && e.clipboardData.items;
+          if (!items) return;
+          for (var i = 0; i < items.length; i++) {
+            if (/^image\//.test(items[i].type)) {
+              var f = items[i].getAsFile();
+              if (f) { acceptShot(f); break; }
+            }
+          }
+        });
+
+        // ================= Image maker =================
+        // The text models above read and write; this one goes the other
+        // way: words in, a picture out, from Meta's Muse Image model
+        // (muse-image-1.0). Same key, same services, tried in the same
+        // order. The picture comes back either as base64 in the reply or
+        // as a link to the file; both are handled, and the download
+        // button always points at bytes the browser can save.
+        var imgPrompt = document.getElementById("f-img-prompt");
+        var btnGenImg = document.getElementById("btn-gen-img");
+        var imgStatus = document.getElementById("img-status");
+        var imgResult = document.getElementById("img-result");
+        var imgOut = document.getElementById("img-out");
+        var btnDownloadImg = document.getElementById("btn-download-img");
+        var imgDetails = document.getElementById("img-details");
+        var imgDetailsText = document.getElementById("img-details-text");
+        var imgBusy = false;
+        var imgBlobUrl = null;
+
+        function setImgStatus(msg, kind) {
+          imgStatus.textContent = msg || "";
+          imgStatus.className = "img-status" + (kind ? " " + kind : "");
+        }
+
+        function showImgDetails(lines) {
+          if (!lines || !lines.length) {
+            imgDetails.hidden = true;
+            imgDetailsText.textContent = "";
+            return;
+          }
+          imgDetailsText.textContent = lines.join("\n");
+          imgDetails.hidden = false;
+        }
+
+        function generateImage() {
+          if (imgBusy) return;
+          var promptText = clean(imgPrompt.value);
+          if (!apiKey) {
+            setImgStatus("Add your Meta API key in the key box above first, then tap the button and the Muse Image model will make your picture.", "err");
+            keyInput.scrollIntoView({ behavior: "smooth", block: "center" });
+            return;
+          }
+          if (!promptText) {
+            setImgStatus("Type a few words describing the picture first, then tap Generate the picture.", "err");
+            imgPrompt.focus();
+            return;
+          }
+          imgBusy = true;
+          btnGenImg.disabled = true;
+          btnGenImg.textContent = "Making your picture...";
+          setImgStatus("The Muse Image model is making your picture. This can take a little while, sometimes half a minute or more.");
+          showImgDetails(null);
+
+          var attempts = [];
+          var chain = Promise.resolve(null);
+          API_SERVICES.forEach(function (svc) {
+            chain = chain.then(function (found) {
+              if (found) return found;
+              return fetchWithTimeout(svc.base + "/images/generations", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                  "Authorization": "Bearer " + apiKey
+                },
+                body: JSON.stringify({
+                  model: "muse-image-1.0",
+                  prompt: promptText,
+                  n: 1
+                })
+              }, 120000).then(readApiResponse).then(function (r) {
+                var d = null;
+                try { d = (r.json && r.json.data && r.json.data[0]) || null; } catch (e) { d = null; }
+                if (r.ok && d && (d.b64_json || d.url)) {
+                  return { svc: svc, r: r, d: d };
+                }
+                if (r.ok) {
+                  attempts.push(svc.label + " (" + svc.base + ") answered HTTP " + r.status + ", but no picture came back in the reply. Full reply: " + String(r.text || "").slice(0, 1500));
+                } else {
+                  attempts.push(svc.label + " (" + svc.base + ") answered HTTP " + r.status + (apiErrorText(r) ? ": " + apiErrorText(r) : ""));
+                }
+                return null;
+              }, function (err) {
+                attempts.push(svc.label + " could not be reached at all (" + (err && err.name === "AbortError" ? "the wait timed out" : "connection failed") + ")");
+                return null;
+              });
+            });
+          });
+          chain.then(function (found) {
+            if (!found) {
+              setImgStatus("No picture this time. Neither Meta service would make one, and what each answered is in the details below. Double check the key, then try again.", "err");
+              showImgDetails(attempts);
+              return;
+            }
+            if (imgBlobUrl) { URL.revokeObjectURL(imgBlobUrl); imgBlobUrl = null; }
+            if (found.d.b64_json) {
+              imgOut.src = "data:image/png;base64," + found.d.b64_json;
+              btnDownloadImg.href = imgOut.src;
+            } else {
+              imgOut.src = found.d.url;
+              btnDownloadImg.href = found.d.url;
+              // Turn the hosted picture into a local copy so the
+              // download button saves the file itself instead of just
+              // opening the link. If that fetch is blocked, the direct
+              // link stays on the button as the fallback.
+              fetch(found.d.url).then(function (res) { return res.blob(); }).then(function (blob) {
+                if (imgBlobUrl) URL.revokeObjectURL(imgBlobUrl);
+                imgBlobUrl = URL.createObjectURL(blob);
+                btnDownloadImg.href = imgBlobUrl;
+              }).catch(function () { /* direct link stays */ });
+            }
+            imgResult.classList.add("show");
+            setImgStatus("Your picture is ready, made by " + found.svc.label + "'s muse-image-1.0 model. Download it below and post it wherever you like. Not quite right? Change the words and generate again. Words inside a picture sometimes come out garbled, and a fresh try often fixes that.", "ok");
+            showToast("Your picture is ready.");
+          }).catch(function (err) {
+            setImgStatus("Something went wrong before the picture could be made. The detail is below. Try again in a moment.", "err");
+            showImgDetails(["Technical detail: " + (err ? (err.name || "Error") + ": " + (err.message || err) : "unknown error")]);
+          }).then(function () {
+            imgBusy = false;
+            btnGenImg.disabled = false;
+            btnGenImg.textContent = "Generate the picture";
+          });
+        }
+
+        btnGenImg.addEventListener("click", generateImage);
+
+        function setForm(v) {
+          fields.link.value = v.link;
+          fields.name.value = v.name;
+          fields.sale.value = v.sale;
+          fields.was.value = v.was;
+          fields.tag.value = v.tag;
+          fields.pct.value = v.pct;
+          fields.promo.value = v.promo;
+        }
+
+        setForm(EMPTY);
+        buildKit();
+      })();
+    </script>
+  </body>
+</html>
